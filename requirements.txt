@@ -1,5 +1,23 @@
+# Core pipeline
 pandas==2.2.2
+numpy>=1.26.0
+
+# Testing
 pytest==8.2.2
+
+# Terminal visual
 rich>=13.0.0
+
+# Dashboard web
 streamlit>=1.35.0
 plotly>=5.0.0
+
+# API REST (Fase 4 do Roadmap)
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+
+# Orquestração — opcional, instalar separado (Fase 1)
+# apache-airflow>=2.9.0
+
+# Previsão de demanda avançada — opcional (Fase 4)
+# prophet>=1.1.5
