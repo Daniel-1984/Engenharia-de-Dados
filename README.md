@@ -1,11 +1,19 @@
 # ATLAS — Automated Transaction Loading & Analytics System
 
 > **ERP Data Pipeline** | Python · SQLite · Pandas · SQL
+> <img width="1881" height="856" alt="image" src="https://github.com/user-attachments/assets/8f5d2fdd-30c5-43ff-9c53-b575d381f1e8" />
+<img width="1862" height="853" alt="image" src="https://github.com/user-attachments/assets/be939127-d57f-4fe9-9069-1957ff80130f" />
+<img width="1840" height="821" alt="image" src="https://github.com/user-attachments/assets/5f091c04-09b1-4cf6-8df7-ef780b078ef7" />
+<img width="1853" height="829" alt="image" src="https://github.com/user-attachments/assets/0c0809c5-5ad7-4449-938b-3cc6a5c62a65" />
+<img width="1899" height="784" alt="image" src="https://github.com/user-attachments/assets/17ea1c5c-2053-41b2-a910-276a5d32bb31" />
+<img width="1859" height="871" alt="image" src="https://github.com/user-attachments/assets/d0e3f1aa-f796-4235-a45f-413e2df67792" />
+
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
 [![SQLite](https://img.shields.io/badge/SQLite-3.x-lightgrey.svg)](https://sqlite.org)
 [![Pandas](https://img.shields.io/badge/Pandas-2.x-150458.svg)](https://pandas.pydata.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+<img width="1824" height="846" alt="image" src="https://github.com/user-attachments/assets/b65d37b6-7255-4345-bd1e-04d96306dadf" />
 
 ---
 
@@ -386,4 +394,4 @@ MIT © 2024
 
 ---
 
-*Construído como projeto de portfólio para demonstrar competências em Data Engineering.*
+*Construído como projeto de competências em Data Engineering.*
