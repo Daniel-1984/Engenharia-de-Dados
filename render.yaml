@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: atlas-erp-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: bash start.sh
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: ATLAS_ENV
+        value: production
