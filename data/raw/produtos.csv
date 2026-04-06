@@ -1,0 +1,26 @@
+cod_produto,descricao,categoria,unidade,custo_unitario,preco_venda,estoque_minimo,estoque_maximo,ativo,cod_fornecedor_principal
+PRD001,Notebook Dell Inspiron 15,Informatica,UN,2850.00,4299.90,5,50,1,FOR001
+PRD002,Monitor LG 24" Full HD,Informatica,UN,780.00,1199.90,3,30,1,FOR001
+PRD003,Teclado Mecanico Redragon,Informatica,UN,185.00,319.90,10,100,1,FOR002
+PRD004,Mouse Sem Fio Logitech,Informatica,UN,95.00,169.90,10,100,1,FOR002
+PRD005,Cadeira Ergonomica premium,Moveis,UN,890.00,1590.00,2,20,1,FOR003
+PRD006,Mesa de Escritorio 1.60m,Moveis,UN,450.00,799.00,2,15,1,FOR003
+PRD007,Papel A4 Resma 500fls,Papelaria,RS,18.50,34.90,50,500,1,FOR004
+PRD008,Caneta Esferografica Azul cx12,Papelaria,CX,8.20,18.00,20,200,1,FOR004
+PRD009,Impressora HP LaserJet,Informatica,UN,1200.00,1899.00,2,15,1,FOR001
+PRD010,Roteador TP-Link Dual Band,Informatica,UN,165.00,289.90,5,40,1,FOR002
+PRD011,HD Externo 1TB Seagate,Informatica,UN,220.00,389.90,5,50,1,FOR001
+PRD012,Webcam Logitech C920,Informatica,UN,310.00,499.90,3,25,1,FOR002
+PRD013,Headset Gamer HyperX,Informatica,UN,250.00,429.90,5,40,1,FOR002
+PRD014,Smartphone Samsung Galaxy A54,Telefonia,UN,1100.00,1799.00,3,30,1,FOR005
+PRD015,Tablet iPad 10a Geracao,Informatica,UN,2300.00,3499.00,2,15,1,FOR001
+PRD016,Nobreak APC 1500VA,Informatica,UN,650.00,1099.00,3,20,1,FOR002
+PRD017,Filtro de Linha 5 Tomadas,Eletricos,UN,28.00,59.90,20,200,1,FOR006
+PRD018,Ar Condicionado Split 9000BTU,Climatizacao,UN,1350.00,2199.00,1,10,1,FOR007
+PRD019,Garrafa Termica Inox 1L,Utensilios,UN,42.00,89.90,10,80,1,FOR004
+PRD020,Agenda 2025 Executiva,Papelaria,UN,25.00,54.90,15,150,1,FOR004
+PRD021,Switch 8 Portas Gigabit,Informatica,UN,140.00,249.90,3,25,1,FOR002
+PRD022,Cabo HDMI 2m,Informatica,UN,22.00,49.90,20,150,1,FOR002
+PRD023,SSD 480GB Kingston,Informatica,UN,185.00,299.90,5,60,1,FOR001
+PRD024,Pendrive 64GB Kingston,Informatica,UN,35.00,69.90,10,100,1,FOR001
+PRD025,Licenca Office 365 Business,Software,LI,380.00,649.90,0,999,1,FOR001

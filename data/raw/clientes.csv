@@ -1,0 +1,18 @@
+cod_cliente,razao_social,cnpj,segmento,cidade,estado,limite_credito,ativo,data_cadastro
+CLI001,Construtora Horizonte Ltda,12.345.678/0001-90,Construcao Civil,Sao Paulo,SP,150000.00,1,2020-03-15
+CLI002,TechSolucoes Informatica SA,23.456.789/0001-01,Tecnologia,Campinas,SP,80000.00,1,2019-07-22
+CLI003,Escola Municipal Centro Educacional,34.567.890/0001-12,Educacao,Belo Horizonte,MG,30000.00,1,2021-01-10
+CLI004,Hospital Santa Cruz SA,45.678.901/0001-23,Saude,Rio de Janeiro,RJ,200000.00,1,2018-11-05
+CLI005,Supermercado Familia Ltda,56.789.012/0001-34,Varejo,Porto Alegre,RS,60000.00,1,2020-09-18
+CLI006,Advocacia Mendes & Souza,67.890.123/0001-45,Juridico,Curitiba,PR,25000.00,1,2022-02-28
+CLI007,Industria Metalurgica Forja Ltda,78.901.234/0001-56,Industrial,Santo Andre,SP,300000.00,1,2017-05-30
+CLI008,Farmacia Popular do Bairro,89.012.345/0001-67,Varejo,Fortaleza,CE,20000.00,1,2021-08-14
+CLI009,Agencia de Viagens Mundo Tour,90.123.456/0001-78,Turismo,Salvador,BA,40000.00,1,2020-04-07
+CLI010,Escritorio Contabil Precision,01.234.567/0001-89,Servicos,Manaus,AM,15000.00,1,2023-01-15
+CLI011,Logistica Express Frete SA,12.345.678/0002-71,Logistica,Goiania,GO,90000.00,1,2019-12-03
+CLI012,Padaria Artesanal Trigo de Ouro,23.456.789/0002-84,Alimentacao,Recife,PE,10000.00,1,2022-06-20
+CLI013,Clinica Odontologica SorrirBem,34.567.890/0002-95,Saude,Florianopolis,SC,18000.00,1,2021-11-09
+CLI014,Deposito de Material Construcao,45.678.901/0002-06,Construcao Civil,Natal,RN,75000.00,1,2020-07-25
+CLI015,Instituto de Ensino Superior Apex,56.789.012/0002-17,Educacao,Brasilia,DF,50000.00,1,2018-03-12
+CLI016,Corretora de Seguros MegaVida,,Financeiro,Sao Paulo,SP,35000.00,1,2023-04-01
+CLI017,Restaurante Sabor Mineiro Ltda,78.901.234/0002-39,Alimentacao,Uberlandia,MG,,1,2022-09-15

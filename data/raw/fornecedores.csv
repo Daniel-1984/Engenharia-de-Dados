@@ -1,0 +1,9 @@
+cod_fornecedor,razao_social,cnpj,categoria,cidade,estado,prazo_entrega_dias,ativo
+FOR001,TechDistrib Eletronicos SA,11.222.333/0001-44,Informatica,Sao Paulo,SP,7,1
+FOR002,PerifericosBR Distribuidora,22.333.444/0001-55,Perifericos,Sao Paulo,SP,5,1
+FOR003,MoveisPlus Comercio Ltda,33.444.555/0001-66,Moveis,Guarulhos,SP,15,1
+FOR004,PapelariaMax Distribuidora,44.555.666/0001-77,Papelaria,Osasco,SP,3,1
+FOR005,CelularNet Distribuidora SA,55.666.777/0001-88,Telefonia,Sao Paulo,SP,7,1
+FOR006,EletricosNacional Ltda,66.777.888/0001-99,Eletricos,Sao Bernardo do Campo,SP,5,1
+FOR007,ClimaFrio Distribuidora,77.888.999/0001-10,Climatizacao,Campinas,SP,21,1
+FOR008,SoftLicencas Brasil,88.999.000/0001-21,Software,Rio de Janeiro,RJ,1,0
