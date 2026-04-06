@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATLAS Academy — Aprenda Engenharia de Dados em 7 Dias</title>
+<style>
+  :root {
+    --bg: #0e1117;
+    --bg2: #1a1d2e;
+    --bg3: #242840;
+    --accent: #7c3aed;
+    --accent2: #a855f7;
+    --gold: #f59e0b;
+    --green: #10b981;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --cyan: #06b6d4;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #334155;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 2px solid var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(124,58,237,.4) 0%, transparent 70%);
+  }
+  .header-content { position: relative; z-index: 1; }
+  .logo { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px;
+    background: linear-gradient(135deg, #a855f7, #06b6d4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .subtitle { color: var(--muted); font-size: 1.1rem; margin-top: .5rem; }
+  .badge-row { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+  .badge { background: rgba(124,58,237,.2); border: 1px solid var(--accent);
+    padding: .4rem 1rem; border-radius: 999px; font-size: .85rem; color: var(--accent2); }
+
+  /* ── LAYOUT ── */
+  main { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+  /* ── XP TRACKER ── */
+  .xp-tracker {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem;
+  }
+  .xp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+  .xp-title { font-weight: 700; font-size: 1.1rem; }
+  .xp-total { color: var(--gold); font-weight: 700; font-size: 1.1rem; }
+  .xp-bar-wrap { background: var(--bg3); border-radius: 999px; height: 12px; overflow: hidden; }
+  .xp-bar { height: 100%; border-radius: 999px; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--cyan));
+    transition: width 1s ease; }
+  .rank-label { text-align: center; color: var(--muted); font-size: .85rem; margin-top: .5rem; }
+
+  .ranks { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: .75rem; margin-top: 1rem; }
+  .rank-item { background: var(--bg3); border: 1px solid var(--border);
+    border-radius: .75rem; padding: .75rem 1rem; font-size: .8rem; }
+  .rank-item .rank-xp { color: var(--gold); font-weight: 700; }
+  .rank-item .rank-name { color: var(--text); margin-top: .25rem; }
+
+  /* ── FASE CARDS ── */
+  .phases { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .phase-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 1rem; overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .phase-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,58,237,.2); }
+
+  .phase-header {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1.25rem 1.5rem; cursor: pointer;
+    border-bottom: 1px solid var(--border);
+  }
+  .phase-num {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; font-weight: 900; flex-shrink: 0;
+  }
+  .phase-info { flex: 1; }
+  .phase-title { font-weight: 700; font-size: 1.05rem; }
+  .phase-theme { color: var(--muted); font-size: .85rem; margin-top: .2rem; }
+  .phase-xp {
+    background: rgba(245,158,11,.1); border: 1px solid var(--gold);
+    color: var(--gold); padding: .3rem .8rem; border-radius: 999px;
+    font-size: .85rem; font-weight: 700; white-space: nowrap;
+  }
+  .phase-toggle { color: var(--muted); font-size: 1.2rem; transition: transform .3s; }
+  .phase-card.open .phase-toggle { transform: rotate(180deg); }
+
+  .phase-body { display: none; padding: 1.5rem; }
+  .phase-card.open .phase-body { display: block; }
+
+  /* ── MISSÕES ── */
+  .mission {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: .75rem; padding: 1.25rem; margin-bottom: 1rem;
+  }
+  .mission-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+  .mission-title { font-weight: 600; color: var(--cyan); margin-bottom: .5rem; }
+  .mission-xp {
+    background: rgba(16,185,129,.1); border: 1px solid var(--green);
+    color: var(--green); padding: .2rem .6rem; border-radius: 999px;
+    font-size: .8rem; font-weight: 700; white-space: nowrap;
+  }
+  .mission-desc { color: var(--muted); font-size: .9rem; line-height: 1.6; }
+
+  pre {
+    background: #0d1117; border: 1px solid var(--border);
+    border-radius: .5rem; padding: 1rem; margin: .75rem 0;
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    font-size: .82rem; overflow-x: auto; line-height: 1.6;
+    color: #c9d1d9;
+  }
+  .kw { color: #ff7b72; }
+  .str { color: #a5d6ff; }
+  .cm { color: #8b949e; }
+  .fn { color: #d2a8ff; }
+  .num { color: #79c0ff; }
+
+  /* ── CHEFE ── */
+  .boss-card {
+    background: linear-gradient(135deg, rgba(239,68,68,.1), rgba(124,58,237,.1));
+    border: 2px solid var(--red); border-radius: .75rem;
+    padding: 1.25rem; margin-top: 1rem;
+  }
+  .boss-title { color: var(--red); font-weight: 700; font-size: 1rem; margin-bottom: .75rem; }
+
+  /* ── CONQUISTA ── */
+  .achievement {
+    background: linear-gradient(135deg, rgba(245,158,11,.1), rgba(124,58,237,.1));
+    border: 1px solid var(--gold); border-radius: .75rem;
+    padding: 1.25rem; margin-top: 1rem; text-align: center;
+  }
+  .achievement-icon { font-size: 2rem; margin-bottom: .5rem; }
+  .achievement-title { color: var(--gold); font-weight: 700; margin-bottom: .5rem; }
+  .achievement-desc { color: var(--muted); font-size: .9rem; }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; margin: .75rem 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: .6rem;
+    color: var(--muted); font-size: .9rem; padding: .3rem 0; }
+  .checklist li::before { content: '☐'; color: var(--accent2); flex-shrink: 0; }
+
+  /* ── TABELA PLACAR ── */
+  .score-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+  .score-table th { background: var(--bg3); padding: .75rem 1rem;
+    text-align: left; font-size: .85rem; color: var(--muted);
+    border-bottom: 1px solid var(--border); }
+  .score-table td { padding: .75rem 1rem; border-bottom: 1px solid rgba(51,65,85,.5);
+    font-size: .9rem; }
+  .score-table tr:last-child td { font-weight: 700; color: var(--gold); }
+  .score-table tr:hover td { background: rgba(124,58,237,.05); }
+
+  /* ── DICAS ── */
+  .tips { background: var(--bg3); border-left: 3px solid var(--blue);
+    padding: 1rem 1.25rem; border-radius: 0 .5rem .5rem 0; margin-top: 1rem; }
+  .tips p { color: var(--muted); font-size: .9rem; line-height: 1.7; }
+  .tips strong { color: var(--text); }
+
+  /* ── CORES POR FASE ── */
+  .c1 { background: linear-gradient(135deg, #7c3aed, #a855f7); color: white; }
+  .c2 { background: linear-gradient(135deg, #0891b2, #06b6d4); color: white; }
+  .c3 { background: linear-gradient(135deg, #059669, #10b981); color: white; }
+  .c4 { background: linear-gradient(135deg, #d97706, #f59e0b); color: white; }
+  .c5 { background: linear-gradient(135deg, #dc2626, #ef4444); color: white; }
+  .c6 { background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; }
+  .c7 { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; }
+
+  .border1 { border-top: 3px solid #7c3aed; }
+  .border2 { border-top: 3px solid #06b6d4; }
+  .border3 { border-top: 3px solid #10b981; }
+  .border4 { border-top: 3px solid #f59e0b; }
+  .border5 { border-top: 3px solid #ef4444; }
+  .border6 { border-top: 3px solid #a855f7; }
+  .border7 { border-top: 3px solid #f59e0b; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 2rem; color: var(--muted); font-size: .85rem;
+    border-top: 1px solid var(--border); margin-top: 3rem;
+  }
+  footer a { color: var(--accent2); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .logo { font-size: 2.5rem; }
+    .phase-header { flex-wrap: wrap; }
+    .ranks { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <div class="logo">ATLAS ACADEMY</div>
+    <div class="subtitle">Aprenda Engenharia de Dados em 7 Dias — Usando o Projeto ATLAS como Gabarito</div>
+    <div class="badge-row">
+      <span class="badge">7 Fases</span>
+      <span class="badge">1600 XP</span>
+      <span class="badge">45 min/dia</span>
+      <span class="badge">100% Gratuito</span>
+      <span class="badge">Engenharia Reversa</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- XP TRACKER -->
+  <div class="xp-tracker">
+    <div class="xp-header">
+      <span class="xp-title">Seu Progresso</span>
+      <span class="xp-total" id="xpDisplay">0 / 1600 XP</span>
+    </div>
+    <div class="xp-bar-wrap">
+      <div class="xp-bar" id="xpBar"></div>
+    </div>
+    <div class="rank-label" id="rankLabel">Complete as missões para subir de nível!</div>
+    <div class="ranks">
+      <div class="rank-item"><div class="rank-xp">0 – 400 XP</div><div class="rank-name">Aprendiz de Dados</div></div>
+      <div class="rank-item"><div class="rank-xp">401 – 800 XP</div><div class="rank-name">Analista de Dados</div></div>
+      <div class="rank-item"><div class="rank-xp">801 – 1200 XP</div><div class="rank-name">Engenheiro Jr</div></div>
+      <div class="rank-item"><div class="rank-xp">1201 – 1500 XP</div><div class="rank-name">Engenheiro Pleno</div></div>
+      <div class="rank-item"><div class="rank-xp">1501 – 1600 XP</div><div class="rank-name">Engenheiro Sênior ⭐</div></div>
+    </div>
+  </div>
+
+  <!-- FASES -->
+  <div class="phases">
+
+    <!-- FASE 1 -->
+    <div class="phase-card border1" id="phase1">
+      <div class="phase-header" onclick="toggle('phase1')">
+        <div class="phase-num c1">1</div>
+        <div class="phase-info">
+          <div class="phase-title">O Mapa do Tesouro</div>
+          <div class="phase-theme">Entender o projeto sem escrever uma linha de código</div>
+        </div>
+        <div class="phase-xp">100 XP</div>
+        <div class="phase-toggle">▼</div>
+      </div>
+      <div class="phase-body">
+
+        <div class="tips">
+          <p><strong>Por que esta fase existe?</strong><br>
+          Todo engenheiro de dados antes de mexer em qualquer coisa <strong>lê e entende</strong> o que já existe.
+          Isso se chama <strong>engenharia reversa</strong> — descobrir como algo funciona desmontando ele.</p>
+        </div>
+
+        <br>
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 1.1 — Explorar a estrutura (15 min)</div>
+              <div class="mission-desc">Abra o terminal e rode o pipeline. Observe a saída e responda no papel:<br>
+              • Quantas entidades foram processadas?<br>
+              • Quantas linhas foram rejeitadas e por quê?<br>
+              • Quanto tempo levou o pipeline?</div>
+            </div>
+            <div>
+              <div class="mission-xp" onclick="addXP(20, this)">+20 XP</div>
+            </div>
+          </div>
+          <pre><span class="cm"># No terminal, dentro da pasta do projeto</span>
+<span class="kw">py</span> main.py</pre>
+        </div>
+
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 1.2 — Ler os dados brutos (15 min)</div>
+              <div class="mission-desc">Abra os arquivos em <code>data/raw/</code> com Excel ou qualquer editor. Responda:<br>
+              • Qual produto tem o maior preço de venda?<br>
+              • Qual cliente não tem CNPJ preenchido?<br>
+              • Qual movimentação tem a data no formato errado?<br>
+              <br><em>Dica: as respostas estão na DOCUMENTACAO_DIDATICA.md</em></div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(20, this)">+20 XP</div></div>
+          </div>
+        </div>
+
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 1.3 — O Mapa da Arquitetura (10 min)</div>
+              <div class="mission-desc">Desenhe no papel o fluxo do projeto. Preencha os 4 quadrados. Use o README.md como referência.</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(30, this)">+30 XP</div></div>
+          </div>
+          <pre>[ <span class="str">?</span> ]  -->  [ <span class="str">?</span> ]  -->  [ <span class="str">?</span> ]  -->  [ <span class="str">?</span> ]</pre>
+        </div>
+
+        <div class="boss-card">
+          <div class="boss-title">⚔️ CHEFE DA FASE 1 — Quiz (responda sem olhar)</div>
+          <ul class="checklist">
+            <li>O que significa ETL?</li>
+            <li>Qual arquivo Python é o "maestro" do pipeline?</li>
+            <li>O que é um Data Warehouse?</li>
+            <li>Qual a diferença entre uma tabela dim_ e uma fct_?</li>
+          </ul>
+          <br>
+          <div class="mission-xp" style="display:inline-block" onclick="addXP(30, this)">+30 XP (7,5 por resposta)</div>
+        </div>
+
+        <div class="achievement">
+          <div class="achievement-icon">🔍</div>
+          <div class="achievement-title">CONQUISTA: "Detetive de Dados"</div>
+          <div class="achievement-desc">Você sabe o que o projeto faz antes de tocar no código.<br>Isso é raro. A maioria dos iniciantes sai escrevendo sem entender.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FASE 2 -->
+    <div class="phase-card border2" id="phase2">
+      <div class="phase-header" onclick="toggle('phase2')">
+        <div class="phase-num c2">2</div>
+        <div class="phase-info">
+          <div class="phase-title">As Fontes do Rio</div>
+          <div class="phase-theme">De onde vêm os dados — CSV, Pandas e Extração (E do ETL)</div>
+        </div>
+        <div class="phase-xp">150 XP</div>
+        <div class="phase-toggle">▼</div>
+      </div>
+      <div class="phase-body">
+
+        <div class="tips">
+          <p><strong>Por que esta fase existe?</strong><br>
+          Dados precisam <strong>vir de algum lugar</strong>. No mundo real vêm de ERPs, APIs, bancos.
+          Aqui vêm de CSVs. O módulo <code>etl/extract/csv_reader.py</code> faz essa leitura.
+          Você vai entender como funciona e escrever o seu próprio.</p>
+        </div>
+
+        <br>
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 2.1 — Ler um CSV com Python (20 min)</div>
+              <div class="mission-desc">Crie o arquivo <code>pratica/dia2.py</code> e rode.</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(30, this)">+30 XP</div></div>
+          </div>
+          <pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df = pd.read_csv(<span class="str">"data/raw/produtos.csv"</span>)
+
+<span class="fn">print</span>(<span class="str">"Total de produtos:"</span>, <span class="fn">len</span>(df))
+<span class="fn">print</span>(<span class="str">"Colunas:"</span>, df.columns.tolist())
+<span class="fn">print</span>(<span class="str">"Produtos com preco > 1000:"</span>)
+<span class="fn">print</span>(df[df[<span class="str">"preco_venda"</span>] > <span class="num">1000</span>][[<span class="str">"cod_produto"</span>, <span class="str">"descricao"</span>, <span class="str">"preco_venda"</span>]])</pre>
+        </div>
+
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 2.2 — Engenharia reversa do csv_reader.py (20 min)</div>
+              <div class="mission-desc">Abra <code>etl/extract/csv_reader.py</code> e responda:<br>
+              • O que faz o parâmetro <code>dtype=str</code>? Por que não ler já com o tipo correto?<br>
+              • O que é <code>_row_hash</code>? Para que serve?<br>
+              • O que acontece se o arquivo não existir?</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(40, this)">+40 XP</div></div>
+          </div>
+        </div>
+
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 2.3 — Colunas calculadas (20 min)</div>
+              <div class="mission-desc">Adicione no seu <code>pratica/dia2.py</code>: calcule margem bruta e percentual. Ordene pelo maior.</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(40, this)">+40 XP</div></div>
+          </div>
+          <pre>df[<span class="str">"margem_bruta"</span>] = df[<span class="str">"preco_venda"</span>].astype(<span class="fn">float</span>) - df[<span class="str">"custo_unitario"</span>].astype(<span class="fn">float</span>)
+df[<span class="str">"margem_pct"</span>]  = (df[<span class="str">"margem_bruta"</span>] / df[<span class="str">"preco_venda"</span>].astype(<span class="fn">float</span>) * <span class="num">100</span>).round(<span class="num">1</span>)
+
+<span class="fn">print</span>(df.sort_values(<span class="str">"margem_pct"</span>, ascending=<span class="kw">False</span>)[[<span class="str">"descricao"</span>, <span class="str">"margem_pct"</span>]].head(<span class="num">5</span>))</pre>
+        </div>
+
+        <div class="boss-card">
+          <div class="boss-title">⚔️ CHEFE DA FASE 2 — Crie pratica/dia2_chefe.py que:</div>
+          <ul class="checklist">
+            <li>Leia clientes.csv</li>
+            <li>Filtre só os clientes do segmento "INDUSTRIA"</li>
+            <li>Mostre o nome e o limite de crédito</li>
+            <li>Calcule a média do limite de crédito desse segmento</li>
+          </ul>
+          <br>
+          <div class="mission-xp" style="display:inline-block" onclick="addXP(40, this)">+40 XP</div>
+        </div>
+
+        <div class="achievement">
+          <div class="achievement-icon">📥</div>
+          <div class="achievement-title">CONQUISTA: "Extrator"</div>
+          <div class="achievement-desc">Você sabe ler dados de qualquer CSV com Python.<br>O <strong>E</strong> do ETL está dominado.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FASE 3 -->
+    <div class="phase-card border3" id="phase3">
+      <div class="phase-header" onclick="toggle('phase3')">
+        <div class="phase-num c3">3</div>
+        <div class="phase-info">
+          <div class="phase-title">O Filtro de Ouro</div>
+          <div class="phase-theme">Qualidade de Dados e Transformação (T do ETL)</div>
+        </div>
+        <div class="phase-xp">200 XP</div>
+        <div class="phase-toggle">▼</div>
+      </div>
+      <div class="phase-body">
+
+        <div class="tips">
+          <p><strong>Por que esta fase existe?</strong><br>
+          Dados nunca chegam limpos. Um Engenheiro de Dados passa <strong>60-70% do tempo</strong> limpando dados.
+          Esta fase ensina a detectar e rejeitar dados ruins — o coração do projeto ATLAS.</p>
+        </div>
+
+        <br>
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 3.1 — Entender os rejeitos (15 min)</div>
+              <div class="mission-desc">Rode o pipeline e abra a pasta <code>data/rejected/</code>. Abra cada CSV rejeitado e anote:<br>
+              • Qual entidade gerou mais rejeições?<br>
+              • Qual foi o motivo mais comum?<br>
+              • Esses problemas existiriam em uma empresa real?</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(30, this)">+30 XP</div></div>
+          </div>
+        </div>
+
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 3.2 — Engenharia reversa do validator (20 min)</div>
+              <div class="mission-desc">Abra <code>quality/validators.py</code>. Identifique:<br>
+              • Quais são os 3 tipos de verificação que o validator faz?<br>
+              • O que acontece se uma coluna obrigatória estiver faltando?<br>
+              • Como o validator decide se um campo tem "muitos nulos"?</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(40, this)">+40 XP</div></div>
+          </div>
+        </div>
+
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 3.3 — Escrever sua própria validação (30 min)</div>
+              <div class="mission-desc">Crie <code>pratica/dia3.py</code> com 3 regras de validação. A primeira está pronta, você completa as outras 2.</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(50, this)">+50 XP</div></div>
+          </div>
+          <pre>df[<span class="str">"preco_venda"</span>] = pd.to_numeric(df[<span class="str">"preco_venda"</span>], errors=<span class="str">"coerce"</span>)
+
+<span class="cm"># Regra 1: preco_venda deve ser maior que zero</span>
+invalidos = df[df[<span class="str">"preco_venda"</span>] <= <span class="num">0</span>]
+<span class="fn">print</span>(<span class="fn">f</span><span class="str">"Invalidos: {len(invalidos)}"</span>)
+
+<span class="cm"># Regra 2: custo_unitario deve ser menor que preco_venda</span>
+<span class="cm"># ... complete você mesmo</span>
+
+<span class="cm"># Regra 3: estoque_atual nao pode ser negativo</span>
+<span class="cm"># ... complete você mesmo</span></pre>
+        </div>
+
+        <div class="boss-card">
+          <div class="boss-title">⚔️ CHEFE DA FASE 3 — Explicar com suas palavras</div>
+          <div class="mission-desc" style="color:var(--muted); margin-bottom:1rem">
+          Abra <code>etl/transform/clientes_transformer.py</code>. Escreva em português, sem código:<br><br>
+          1. O que a função <code>_clean_cnpj</code> faz passo a passo?<br>
+          2. Por que remover os caracteres <code>. / -</code> do CNPJ?<br>
+          3. Por que formatar de volta para <code>XX.XXX.XXX/XXXX-XX</code>?<br><br>
+          Depois: pegue qualquer CNPJ do clientes.csv e simule o processo <strong>no papel</strong>.
+          </div>
+          <div class="mission-xp" style="display:inline-block" onclick="addXP(80, this)">+80 XP</div>
+        </div>
+
+        <div class="achievement">
+          <div class="achievement-icon">🛡️</div>
+          <div class="achievement-title">CONQUISTA: "Guardião da Qualidade"</div>
+          <div class="achievement-desc">Você sabe por que dados sujos destroem análises.<br>O <strong>T</strong> do ETL está dominado.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FASE 4 -->
+    <div class="phase-card border4" id="phase4">
+      <div class="phase-header" onclick="toggle('phase4')">
+        <div class="phase-num c4">4</div>
+        <div class="phase-info">
+          <div class="phase-title">O Cofre</div>
+          <div class="phase-theme">Banco de dados, SQL e Star Schema (L do ETL) — A fase mais importante</div>
+        </div>
+        <div class="phase-xp">250 XP</div>
+        <div class="phase-toggle">▼</div>
+      </div>
+      <div class="phase-body">
+
+        <div class="tips">
+          <p><strong>Por que esta fase existe?</strong><br>
+          SQL é a linguagem mais importante em Engenharia de Dados.
+          Sem SQL você não analisa nada. Esta fase é a mais importante do jogo.</p>
+        </div>
+
+        <br>
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 4.1 — Explorar o banco (20 min)</div>
+              <div class="mission-desc">Instale o <strong>DB Browser for SQLite</strong> (gratuito). Abra <code>database/erp_warehouse.db</code>.<br>
+              • Quantas tabelas existem?<br>
+              • Qual a diferença visual entre tabelas dim_ e fct_?<br>
+              • Quais tabelas têm mais linhas?</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(30, this)">+30 XP</div></div>
+          </div>
+        </div>
+
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 4.2 — Primeiras queries SQL (30 min)</div>
+              <div class="mission-desc">No DB Browser, aba "Execute SQL", rode cada query e anote o resultado:</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(60, this)">+60 XP</div></div>
+          </div>
+          <pre><span class="cm">-- Query 1: quantos produtos por categoria?</span>
+<span class="kw">SELECT</span> categoria, <span class="fn">COUNT</span>(*) <span class="kw">as</span> total
+<span class="kw">FROM</span> dim_produtos
+<span class="kw">GROUP BY</span> categoria
+<span class="kw">ORDER BY</span> total <span class="kw">DESC</span>;
+
+<span class="cm">-- Query 2: qual cliente tem mais pedidos?</span>
+<span class="kw">SELECT</span> cod_cliente, <span class="fn">COUNT</span>(*) <span class="kw">as</span> pedidos
+<span class="kw">FROM</span> fct_pedidos_venda
+<span class="kw">GROUP BY</span> cod_cliente
+<span class="kw">ORDER BY</span> pedidos <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="num">5</span>;
+
+<span class="cm">-- Query 3: receita total por mês</span>
+<span class="kw">SELECT</span> <span class="fn">strftime</span>(<span class="str">'%Y-%m'</span>, data_pedido) <span class="kw">as</span> mes,
+       <span class="fn">ROUND</span>(<span class="fn">SUM</span>(valor_total), <span class="num">2</span>) <span class="kw">as</span> receita
+<span class="kw">FROM</span> fct_pedidos_venda
+<span class="kw">WHERE</span> status_pedido <span class="kw">NOT IN</span> (<span class="str">'CANCELADO'</span>, <span class="str">'DEVOLVIDO'</span>)
+<span class="kw">GROUP BY</span> mes
+<span class="kw">ORDER BY</span> mes;</pre>
+        </div>
+
+        <div class="boss-card">
+          <div class="boss-title">⚔️ CHEFE DA FASE 4 — Escreva do zero</div>
+          <div class="mission-desc" style="color:var(--muted); margin-bottom:1rem">
+          Escreva uma query SQL que responda:<br><br>
+          <strong>"Quais são os 5 produtos mais vendidos (em quantidade) que ainda estão com estoque abaixo do mínimo?"</strong><br><br>
+          Dicas:<br>
+          • Você precisará de JOIN entre fct_itens_pedido_venda e vw_estoque_atual<br>
+          • Use GROUP BY para somar quantidades<br>
+          • Use WHERE para filtrar os que estão abaixo do mínimo
+          </div>
+          <div class="mission-xp" style="display:inline-block" onclick="addXP(100, this)">+100 XP</div>
+        </div>
+
+        <div class="achievement">
+          <div class="achievement-icon">🏛️</div>
+          <div class="achievement-title">CONQUISTA: "Arquiteto do Cofre"</div>
+          <div class="achievement-desc">Você entende SQL e modelos de dados.<br>O <strong>L</strong> do ETL está dominado. Pipeline completo!</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FASE 5 -->
+    <div class="phase-card border5" id="phase5">
+      <div class="phase-header" onclick="toggle('phase5')">
+        <div class="phase-num c5">5</div>
+        <div class="phase-info">
+          <div class="phase-title">O Painel de Controle</div>
+          <div class="phase-theme">Dashboard, visualização e Streamlit</div>
+        </div>
+        <div class="phase-xp">200 XP</div>
+        <div class="phase-toggle">▼</div>
+      </div>
+      <div class="phase-body">
+
+        <div class="tips">
+          <p><strong>Por que esta fase existe?</strong><br>
+          Dados no banco não valem nada se ninguém consegue enxergar.
+          O dashboard transforma números em decisões de negócio.</p>
+        </div>
+
+        <br>
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 5.1 — Explorar o dashboard (15 min)</div>
+              <div class="mission-desc">Rode o dashboard e explore todas as 5 abas. Responda:<br>
+              • Qual aba mostra os produtos com estoque crítico?<br>
+              • Onde aparecem as anomalias de qualidade de dados?<br>
+              • Qual cliente tem maior receita?</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(30, this)">+30 XP</div></div>
+          </div>
+          <pre><span class="kw">py</span> -m streamlit run dashboard.py
+<span class="cm"># Abre em: http://localhost:8501</span></pre>
+        </div>
+
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 5.3 — Adicionar um gráfico novo (30 min)</div>
+              <div class="mission-desc">No final da aba "Vendas" do dashboard.py, adicione este histograma de descontos:</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(130, this)">+130 XP</div></div>
+          </div>
+          <pre>st.subheader(<span class="str">"Distribuicao de Descontos"</span>)
+fig_desc = px.histogram(
+    query(<span class="str">"SELECT desconto_pct FROM fct_pedidos_venda WHERE desconto_pct > 0"</span>),
+    x=<span class="str">"desconto_pct"</span>, nbins=<span class="num">10</span>,
+    title=<span class="str">"Frequencia de descontos concedidos"</span>,
+)
+fig_desc.update_layout(plot_bgcolor=<span class="str">"#0e1117"</span>, paper_bgcolor=<span class="str">"#0e1117"</span>, font_color=<span class="str">"white"</span>)
+st.plotly_chart(fig_desc, use_container_width=<span class="kw">True</span>)</pre>
+        </div>
+
+        <div class="achievement">
+          <div class="achievement-icon">📊</div>
+          <div class="achievement-title">CONQUISTA: "Narrador de Dados"</div>
+          <div class="achievement-desc">Você transforma dados em histórias visuais.<br>Gestores vão te adorar.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FASE 6 -->
+    <div class="phase-card border6" id="phase6">
+      <div class="phase-header" onclick="toggle('phase6')">
+        <div class="phase-num c6">6</div>
+        <div class="phase-info">
+          <div class="phase-title">A Torre de Controle</div>
+          <div class="phase-theme">API REST com FastAPI — como sistemas se comunicam</div>
+        </div>
+        <div class="phase-xp">200 XP</div>
+        <div class="phase-toggle">▼</div>
+      </div>
+      <div class="phase-body">
+
+        <div class="tips">
+          <p><strong>Por que esta fase existe?</strong><br>
+          No mundo real, dados não ficam só em dashboards. Outros sistemas (apps, ferramentas de BI)
+          precisam <strong>consultar dados via API</strong>. A API é a ponte entre o Data Warehouse e o mundo.</p>
+        </div>
+
+        <br>
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 6.1 — Explorar a API (15 min)</div>
+              <div class="mission-desc">Rode a API e abra o Swagger. Teste cada endpoint com "Try it out":<br>
+              • O que retorna <code>/estoque/criticos</code>?<br>
+              • O que retorna <code>/vendas/kpis</code>?<br>
+              • O que retorna <code>/qualidade/anomalias</code>?</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(30, this)">+30 XP</div></div>
+          </div>
+          <pre><span class="kw">py</span> -m uvicorn api.main:app --reload
+<span class="cm"># Swagger em: http://localhost:8000/docs</span></pre>
+        </div>
+
+        <div class="mission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-title">Missão 6.3 — Criar um endpoint novo (30 min)</div>
+              <div class="mission-desc">Em <code>api/routers/estoque.py</code>, adicione um endpoint que retorna o valor total do estoque.</div>
+            </div>
+            <div><div class="mission-xp" onclick="addXP(120, this)">+120 XP</div></div>
+          </div>
+          <pre>@router.get(<span class="str">"/valor-total"</span>, summary=<span class="str">"Valor total do estoque"</span>)
+<span class="kw">def</span> <span class="fn">get_valor_total</span>(conn = Depends(get_db)):
+    row = conn.execute(<span class="str">"""
+        SELECT ROUND(SUM(valor_estoque), 2) AS valor_total,
+               COUNT(*) AS total_produtos
+        FROM vw_estoque_atual
+    """</span>).fetchone()
+    <span class="kw">return</span> <span class="fn">dict</span>(row)</pre>
+        </div>
+
+        <div class="achievement">
+          <div class="achievement-icon">🔌</div>
+          <div class="achievement-title">CONQUISTA: "Engenheiro de APIs"</div>
+          <div class="achievement-desc">Você sabe criar endpoints REST profissionais.<br>Sistemas inteiros dependem do que você constrói.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FASE 7 -->
+    <div class="phase-card border7" id="phase7">
+      <div class="phase-header" onclick="toggle('phase7')">
+        <div class="phase-num c7">7</div>
+        <div class="phase-info">
+          <div class="phase-title">O Dia do Chefe Final</div>
+          <div class="phase-theme">Construir algo do zero — Mini Pipeline de Livros</div>
+        </div>
+        <div class="phase-xp">500 XP</div>
+        <div class="phase-toggle">▼</div>
+      </div>
+      <div class="phase-body">
+
+        <div class="tips">
+          <p><strong>Por que esta fase existe?</strong><br>
+          Aprender fazendo é o único jeito que funciona. Aqui você vai construir um
+          mini-pipeline do zero, <strong>sem copiar</strong>. O projeto ATLAS é seu gabarito.</p>
+        </div>
+
+        <br>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:.75rem;padding:1.25rem;margin-bottom:1rem">
+          <div style="color:var(--cyan);font-weight:600;margin-bottom:.75rem">Contexto: Livraria Mini</div>
+          <div style="color:var(--muted);font-size:.9rem">Uma livraria tem 2 arquivos CSV. Sua missão: construir um pipeline ETL completo.</div>
+        </div>
+
+        <div class="mission">
+          <div class="mission-header">
+            <div><div class="mission-title">Passo 1 — Crie os CSVs (pratica/livros/)</div></div>
+          </div>
+          <pre><span class="cm"># livros.csv</span>
+cod_livro,titulo,autor,preco,genero
+LIV001,O Hobbit,Tolkien,<span class="num">49.90</span>,Fantasia
+LIV002,<span class="num">1984</span>,Orwell,<span class="num">35.00</span>,Distopia
+LIV003,Dom Casmurro,Machado,<span class="num">29.90</span>,Romance
+LIV004,Duna,Herbert,<span class="num">-10.00</span>,Ficcao  <span class="cm">&lt;-- ERRO intencional</span>
+LIV005,Neuromancer,Gibson,<span class="num">42.00</span>,Ficcao
+
+<span class="cm"># vendas_livros.csv</span>
+cod_venda,cod_livro,quantidade,data_venda
+V001,LIV001,<span class="num">2</span>,<span class="num">2024</span>-01-15
+V002,LIV002,<span class="num">1</span>,<span class="num">2024</span>-01-16
+V003,LIV999,<span class="num">3</span>,<span class="num">2024</span>-01-17  <span class="cm">&lt;-- ERRO: livro nao existe</span>
+V004,LIV003,<span class="num">5</span>,<span class="num">2024</span>-02-01</pre>
+        </div>
+
+        <div class="boss-card">
+          <div class="boss-title">⚔️ CHEFE FINAL — pratica/livros/pipeline.py</div>
+          <ul class="checklist">
+            <li>Ler os CSVs com pandas</li>
+            <li>Rejeitar livros com preço negativo</li>
+            <li>Rejeitar vendas com cod_livro inválido</li>
+            <li>Calcular valor_total (quantidade × preço)</li>
+            <li>Salvar em SQLite (pratica/livros/livros.db)</li>
+            <li>Imprimir resumo no terminal</li>
+            <li>BONUS: endpoint FastAPI GET /livros/mais-vendidos</li>
+          </ul>
+        </div>
+
+        <br>
+        <table class="score-table">
+          <thead>
+            <tr><th>Critério</th><th>XP</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>ETL lê e processa os CSVs</td><td><span class="mission-xp" style="cursor:pointer" onclick="addXP(100, this)">+100 XP</span></td></tr>
+            <tr><td>Rejeições funcionando corretamente</td><td><span class="mission-xp" style="cursor:pointer" onclick="addXP(100, this)">+100 XP</span></td></tr>
+            <tr><td>valor_total calculado</td><td><span class="mission-xp" style="cursor:pointer" onclick="addXP(50, this)">+50 XP</span></td></tr>
+            <tr><td>Dados salvos no SQLite</td><td><span class="mission-xp" style="cursor:pointer" onclick="addXP(100, this)">+100 XP</span></td></tr>
+            <tr><td>Queries respondendo certo</td><td><span class="mission-xp" style="cursor:pointer" onclick="addXP(100, this)">+100 XP</span></td></tr>
+            <tr><td>BONUS: Endpoint FastAPI</td><td><span class="mission-xp" style="cursor:pointer" onclick="addXP(100, this)" style="border-color:var(--gold);color:var(--gold)">+100 XP BONUS</span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="achievement">
+          <div class="achievement-icon">🏆</div>
+          <div class="achievement-title">CONQUISTA FINAL: "Engenheiro de Dados"</div>
+          <div class="achievement-desc">Você construiu um pipeline ETL do zero, com qualidade de dados, banco e API.<br>
+          <strong>Você está pronto para sua primeira vaga.</strong></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /phases -->
+
+  <!-- PLACAR -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:1rem;padding:1.5rem;margin-top:2rem">
+    <h2 style="margin-bottom:1rem;color:var(--gold)">Placar Final — Máximo 1600 XP</h2>
+    <table class="score-table">
+      <thead><tr><th>Fase</th><th>Tema</th><th>XP</th></tr></thead>
+      <tbody>
+        <tr><td>Dia 1</td><td>O Mapa do Tesouro</td><td>100</td></tr>
+        <tr><td>Dia 2</td><td>As Fontes do Rio</td><td>150</td></tr>
+        <tr><td>Dia 3</td><td>O Filtro de Ouro</td><td>200</td></tr>
+        <tr><td>Dia 4</td><td>O Cofre (SQL)</td><td>250</td></tr>
+        <tr><td>Dia 5</td><td>O Painel de Controle</td><td>200</td></tr>
+        <tr><td>Dia 6</td><td>A Torre de Controle</td><td>200</td></tr>
+        <tr><td>Dia 7</td><td>O Chefe Final</td><td>500</td></tr>
+        <tr><td colspan="2"><strong>TOTAL</strong></td><td><strong>1600 XP</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DICAS -->
+  <div class="tips" style="margin-top:2rem">
+    <p>
+      <strong>Se travar no código:</strong> Abra o arquivo equivalente do ATLAS e use como referência. O projeto inteiro é seu gabarito.<br><br>
+      <strong>Se não entender um conceito:</strong> Leia a <code>DOCUMENTACAO_DIDATICA.md</code>.<br><br>
+      <strong>Se um erro aparecer:</strong> Cole no Google ou no ChatGPT. Saber pesquisar erros é 50% do trabalho.<br><br>
+      <strong>Regra de ouro:</strong> Não copie. Leia, entenda, feche, e escreva de memória. O que você escreve de memória, você nunca esquece.
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  <p>ATLAS Academy — Projeto ATLAS ERP Pipeline |
+  <a href="https://github.com/Daniel-1984/Engenharia-de-Dados" target="_blank">GitHub</a></p>
+  <p style="margin-top:.5rem">Clique nos botões de XP para marcar missões concluídas. O progresso fica salvo nesta aba.</p>
+</footer>
+
+<script>
+  let xp = parseInt(localStorage.getItem('atlas_xp') || '0');
+
+  function updateXP() {
+    const total = 1600;
+    const pct = Math.min((xp / total) * 100, 100);
+    document.getElementById('xpBar').style.width = pct + '%';
+    document.getElementById('xpDisplay').textContent = xp + ' / ' + total + ' XP';
+
+    let rank = 'Aprendiz de Dados';
+    if (xp > 1500) rank = '⭐ Engenheiro Sênior — Parabéns!';
+    else if (xp > 1200) rank = 'Engenheiro Pleno';
+    else if (xp > 800) rank = 'Engenheiro Jr';
+    else if (xp > 400) rank = 'Analista de Dados';
+    document.getElementById('rankLabel').textContent = 'Nível atual: ' + rank;
+
+    localStorage.setItem('atlas_xp', xp);
+  }
+
+  function addXP(amount, btn) {
+    if (btn.dataset.done) return;
+    btn.dataset.done = '1';
+    xp += amount;
+    btn.textContent = '✓ ' + amount + ' XP';
+    btn.style.background = 'rgba(16,185,129,.2)';
+    btn.style.borderColor = '#10b981';
+    btn.style.color = '#10b981';
+    btn.style.cursor = 'default';
+    updateXP();
+  }
+
+  function toggle(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('open');
+  }
+
+  updateXP();
+</script>
+</body>
+</html>
